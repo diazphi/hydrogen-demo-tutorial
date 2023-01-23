@@ -1,0 +1,11 @@
+.collection-filter-container > ul {
+    display: none;
+}
+.collection-filter-container.show > ul {
+    display: block;
+}
+.collection-filter-container > p {
+    display: flex;
+    gap: 32px;
+    margin: auto;
+}

@@ -6,11 +6,11 @@ export default defineConfig({
     defaultLanguageCode: 'EN',
     storeDomain:
       // @ts-ignore
-      Oxygen?.env?.PUBLIC_STORE_DOMAIN || 'hydrogen-preview.myshopify.com',
+      Oxygen?.env?.PUBLIC_STORE_DOMAIN || 'personalise-engrave-services.myshopify.com',
     storefrontToken:
       // @ts-ignore
       Oxygen?.env?.PUBLIC_STOREFRONT_API_TOKEN ||
-      '3b580e70970c4528da70c98e097c2fa0',
+      '30cfd96af1e62b025026439eb6fab200',
     privateStorefrontToken:
       // @ts-ignore
       Oxygen?.env?.PRIVATE_STOREFRONT_API_TOKEN,
