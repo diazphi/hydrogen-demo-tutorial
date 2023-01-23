@@ -67,6 +67,7 @@ function HomepageContent() {
         divider="bottom"
       />
       <CustomSection />
+      {console.log('testing')}
       {/* {secondaryHero && <Hero {...secondaryHero} />}
       <FeaturedCollections
         data={featuredCollections.nodes}
