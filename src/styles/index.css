@@ -176,3 +176,6 @@ shop-pay-button {
     }
   }
 }
+.collection-filter-sorting-container {
+  display: none;
+}
