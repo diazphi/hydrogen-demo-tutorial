@@ -1,0 +1,33 @@
+.collection-sorting-container > ul {
+    display: none;
+}
+.collection-sorting-container.show > ul {
+    display: block;
+}
+.collection-sorting-container > p {
+    display: flex;
+    gap: 32px;
+    margin: auto;
+}
+.collection-filter-sorting-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+.collection-filter-container > .nested-availability-filter {
+    display: none;
+}
+.collection-filter-container.show > .nested-availability-filter {
+    display: block;
+}
+.collection-filter-container > p {
+    display: flex;
+    gap: 32px;
+    margin: auto;
+}
+.collection-filter-container.show > .nested-availability-filter > .nested-list > ul {
+    display: none;
+}
+.collection-filter-container.show > .nested-availability-filter > .nested-list.show > ul {
+    display: block;
+    margin-left: 32px;
+}

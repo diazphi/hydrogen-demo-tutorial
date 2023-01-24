@@ -11,7 +11,7 @@ import {
 
 import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/lib/fragments';
 import {getHeroPlaceholder} from '~/lib/placeholders';
-import {FeaturedCollections, Hero} from '~/components';
+import {FeaturedCollections, Hero, CustomSection} from '~/components';
 import {Layout, ProductSwimlane} from '~/components/index.server';
 
 export default function Homepage() {
@@ -66,12 +66,14 @@ function HomepageContent() {
         title="Featured Products"
         divider="bottom"
       />
-      {secondaryHero && <Hero {...secondaryHero} />}
+      <CustomSection />
+      {console.log('testing')}
+      {/* {secondaryHero && <Hero {...secondaryHero} />}
       <FeaturedCollections
         data={featuredCollections.nodes}
         title="Collections"
       />
-      {tertiaryHero && <Hero {...tertiaryHero} />}
+      {tertiaryHero && <Hero {...tertiaryHero} />} */}
     </>
   );
 }

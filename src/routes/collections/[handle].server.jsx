@@ -9,13 +9,18 @@ import {
 } from '@shopify/hydrogen';
 
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/fragments';
-import {PageHeader, ProductGrid, Section, Text} from '~/components';
+import {PageHeader, ProductGrid, Section, Text, CollectionFilter} from '~/components';
 import {NotFound, Layout} from '~/components/index.server';
 
 const pageBy = 48;
-
-export default function Collection({params}) {
+var sortKey = 'MANUAL';
+var sortReverse = false;
+export default function Collection({params, request}) {
   const {handle} = params;
+  const url = new URL(request.url);
+  sortKey = url.searchParams.get('sortkey');
+  sortReverse = url.searchParams.get('reverse') === 'true' ? true : false;
+  var filterAvailability = url.searchParams.get('availability') === 'true' ? true : url.searchParams.get('availability') === 'false' ? false : 'both';
   const {
     language: {isoCode: language},
     country: {isoCode: country},
@@ -23,16 +28,61 @@ export default function Collection({params}) {
 
   const {
     data: {collection},
-  } = useShopQuery({
+  } = filterAvailability == true ?  
+  useShopQuery({
+    query: COLLECTION_FILTER_AVAILABILITY_QUERY,
+    variables: {
+      handle,
+      language,
+      country,
+      pageBy,
+      sortKey,
+      sortReverse,
+      filterAvailability
+    },
+    preload: true,
+  })
+  : filterAvailability == false ?  
+  useShopQuery({
+    query: COLLECTION_FILTER_AVAILABILITY_QUERY,
+    variables: {
+      handle,
+      language,
+      country,
+      pageBy,
+      sortKey,
+      sortReverse,
+      filterAvailability
+    },
+    preload: true,
+  })
+  : filterAvailability === 'both' ?  
+  useShopQuery({
     query: COLLECTION_QUERY,
     variables: {
       handle,
       language,
       country,
       pageBy,
+      sortKey,
+      sortReverse
     },
     preload: true,
-  });
+  })
+  :
+  useShopQuery({
+    query: COLLECTION_QUERY,
+    variables: {
+      handle,
+      language,
+      country,
+      pageBy,
+      sortKey,
+      sortReverse
+    },
+    preload: true,
+  })
+  ;
 
   if (!collection) {
     return <NotFound type="collection" />;
@@ -63,6 +113,7 @@ export default function Collection({params}) {
           </div>
         )}
       </PageHeader>
+      <CollectionFilter />
       <Section>
         <ProductGrid
           key={collection.id}
@@ -108,6 +159,8 @@ const COLLECTION_QUERY = gql`
     $language: LanguageCode
     $pageBy: Int!
     $cursor: String
+    $sortKey:  ProductCollectionSortKeys
+    $sortReverse: Boolean
   ) @inContext(country: $country, language: $language) {
     collection(handle: $handle) {
       id
@@ -124,7 +177,47 @@ const COLLECTION_QUERY = gql`
         height
         altText
       }
-      products(first: $pageBy, after: $cursor) {
+      products(first: $pageBy, after: $cursor, sortKey: $sortKey, reverse: $sortReverse) {
+        nodes {
+          ...ProductCard
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
+  }
+`;
+
+const COLLECTION_FILTER_AVAILABILITY_QUERY = gql`
+  ${PRODUCT_CARD_FRAGMENT}
+  query CollectionDetails(
+    $handle: String!
+    $country: CountryCode
+    $language: LanguageCode
+    $pageBy: Int!
+    $cursor: String
+    $sortKey:  ProductCollectionSortKeys
+    $sortReverse: Boolean
+    $filterAvailability: Boolean
+  ) @inContext(country: $country, language: $language) {
+    collection(handle: $handle) {
+      id
+      title
+      description
+      seo {
+        description
+        title
+      }
+      image {
+        id
+        url
+        width
+        height
+        altText
+      }
+      products(first: $pageBy, filters: { available: $filterAvailability}, after: $cursor, sortKey: $sortKey, reverse: $sortReverse) {
         nodes {
           ...ProductCard
         }
