@@ -7,14 +7,12 @@ export function CollectionFilter({minPrice, maxPrice}) {
     const [minPriceRange,setminPriceRange] = useState(minPrice);
     const [maxPriceRange,setmaxPriceRange] = useState(maxPrice);
     const OnClickSort = event => {
-        console.log(event.target.closest('.sort-title'));
         if(event.target.closest('.sort-title')) {
             event.target.closest('.collection-sorting-container').classList.toggle('show');
         }       
     }
 
     const OnClickFilter = event => {
-        console.log(event.target.closest('.filter-title'));
         if(event.target.closest('.filter-title')) {
             event.target.closest('.collection-filter-container').classList.toggle('show');
         }       
