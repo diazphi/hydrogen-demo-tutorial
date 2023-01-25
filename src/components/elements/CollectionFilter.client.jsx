@@ -28,7 +28,6 @@ export function CollectionFilter({minPrice, maxPrice}) {
     }
     
     const onFilterParam = event => {
-        console.log(event);
         event.target.closest('.nested-list').classList.toggle('show');
     }
 
@@ -52,7 +51,6 @@ export function CollectionFilter({minPrice, maxPrice}) {
     }
 
     const onFilterPriceParam = event => {
-        console.log(event.target);
         if(event.target.closest('.filter-price')) {
             event.target.closest('.collection-price-container').classList.toggle('show');
         }        
