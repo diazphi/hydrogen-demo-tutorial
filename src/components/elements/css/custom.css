@@ -31,3 +31,23 @@
     display: block;
     margin-left: 32px;
 }
+.collection-price-container > .price-range-container > input,
+.collection-price-container > .price-range-container > label {
+    display: block;
+}
+.collection-price-container > .price-range-container {
+    display: none;
+    margin-left: 32px;
+}
+.collection-price-container.show > .price-range-container {
+    display: block;
+}
+.collection-price-container > .price-range-container > button {
+    border: 1px solid black;
+    padding: 4px 10px;
+    margin-top: 24px;
+}
+.collection-price-container > .price-range-container > button:hover {
+    background-color: black;
+    color: white;
+}

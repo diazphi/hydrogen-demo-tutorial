@@ -1,8 +1,11 @@
 import {Heading, Section, Text} from '~/components';
 import { FaArrowDown } from 'react-icons/fa';
 import './css/custom.css';
-export function CollectionFilter() {
+import { useState } from 'react';
+export function CollectionFilter({minPrice, maxPrice}) {
 
+    const [minPriceRange,setminPriceRange] = useState(minPrice);
+    const [maxPriceRange,setmaxPriceRange] = useState(maxPrice);
     const OnClickSort = event => {
         console.log(event.target.closest('.sort-title'));
         if(event.target.closest('.sort-title')) {
@@ -33,12 +36,40 @@ export function CollectionFilter() {
 
     const onFilterAvailabilityParam = event => {
         const url = new URL(window.location.href);
+        url.searchParams.delete('price');
+        url.searchParams.delete('min');
+        url.searchParams.delete('max');
         url.searchParams.set('availability', event.target.closest('li').getAttribute('data-filter-value'));
         if(event.target.closest('.nested-list').classList.contains('show')) {
             window.location.href = url.toString();
         }      
     }
 
+    const onChangeMin = event => {
+        event.target.value = setminPriceRange(event.target.value);
+    }
+
+    const onChangeMax = event => {
+        event.target.value = setmaxPriceRange(event.target.value);
+    }
+
+    const onFilterPriceParam = event => {
+        console.log(event.target);
+        if(event.target.closest('.filter-price')) {
+            event.target.closest('.collection-price-container').classList.toggle('show');
+        }        
+    }
+
+    const onSubmitFilter = event => {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('availability');
+        url.searchParams.set('price', true);
+        url.searchParams.set('min', event.target.closest('.price-range-container').querySelector('#mininputrange').value);
+        url.searchParams.set('max', event.target.closest('.price-range-container').querySelector('#maxinputrange').value);
+        if(event.target.closest('.collection-price-container').classList.contains('show')) {
+            window.location.href = url.toString();
+        }      
+    }
     return (
         <Section>
             <div className="collection-filter-sorting-container">
@@ -52,7 +83,18 @@ export function CollectionFilter() {
                                 <li data-filter-value="both" onClick={onFilterAvailabilityParam}>Both</li>
                             </ul>
                         </div>
-                        <div data-sort-key="PRICE" onClick={onFilterParam}>Price</div>
+                        <div className="collection-price-container" onClick={onFilterPriceParam}>
+                            <div className="filter-price">Price</div>
+                            <div className="price-range-container">
+                                <label htmlFor="mininputrange">Min (between 0 and 2000):</label>
+                                <input type="range" id="mininputrange" name="mininputrange" min="0" value={minPriceRange} max="2000" step={1} onChange={onChangeMin} />
+                                <p>{minPriceRange}</p>
+                                <label htmlFor="mininputrange">Max (between 0 and 10000):</label>
+                                <input type="range" id="maxinputrange" name="maxinputrange" min="0" value={maxPriceRange} max="10000" step={1} onChange={onChangeMax} />
+                                <p>{maxPriceRange}</p>
+                                <button type="button" onClick={onSubmitFilter}>Apply</button>
+                            </div>
+                        </div>
                     </div>
                 </div>   
                 <div className="collection-sorting-container" onClick={OnClickSort}>
